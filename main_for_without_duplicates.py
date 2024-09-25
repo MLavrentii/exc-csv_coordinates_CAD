@@ -46,7 +46,7 @@ for index, row in df.iterrows():
             coordinates.append([x1, y1])
     restructed_date[num_kui] = coordinates
 
-# print(restructed_date)
+print(restructed_date)
 data_list = []
 z = 0
 for key, values in restructed_date.items(): # .items() gives you key-value pairs
@@ -56,7 +56,15 @@ for key, values in restructed_date.items(): # .items() gives you key-value pairs
         #data_list.append(value[0])
         #data_list.append(value[1])
         #data_list.append(z)
-        data_list.append([f"{key}.{n}", value[0], value[1], z])
+        kui_name = f"{key}.{n}"
+
+        # make condition when we already have same name in row and then just continue count index of it
+        k = n + 1
+        while kui_name in data_list:
+            kui_name = f"{key}.{k}"
+            k += 1
+
+        data_list.append([kui_name, value[0], value[1], z])
         n += 1
 print(data_list)
 
@@ -65,6 +73,6 @@ new_data = pandas.DataFrame(data_list, columns=["Kui_name", "x", "y", "z"])
 # if you want delete the head line just put header=False in .to_csv parameters
 path = fr"{path_to_dir}/{name_excelfile}.csv"
 #print(path)
-new_data.to_csv(path, index=False, header=True)
+new_data.to_csv(path, index=False, header=False)
 
 
